@@ -7,7 +7,8 @@ export class NetworkManager {
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
-        this.socket = io('http://localhost:3000');
+        const backendUrl = (window as any).VITE_BACKEND_URL || 'http://localhost:3000';
+        this.socket = io(backendUrl);
         this.setupListeners();
     }
 

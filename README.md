@@ -22,12 +22,23 @@ A real-time multiplayer snowball battle game built with Phaser.js and Node.js.
 npm install
 cd server && npm install
 
+# Copy environment files
+cp .env.default .env
+cp server/.env.default server/.env
+
 # Development
 npm run dev:all
 
 # Production build
 npm run build
 ```
+
+## Configuration
+
+Edit `.env` files to configure:
+
+- **Frontend:** `VITE_BACKEND_URL` - Backend server URL
+- **Backend:** `PORT` - Server port (default: 3000)
 
 ## Deployment
 

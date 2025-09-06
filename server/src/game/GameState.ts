@@ -45,14 +45,14 @@ export class GameStateManager {
         if (!attacker || !attacker.alive) return null;
 
         let hitPlayer: Player | null = null;
-        for (const [playerId, player] of this.state.players) {
+        for (const [playerId, player] of this.state.players.entries()) {
             if (playerId !== attackerId && player.alive && player.x === targetX && player.y === targetY) {
                 hitPlayer = player;
                 break;
             }
         }
 
-        if (hitPlayer) {
+        if (hitPlayer !== null) {
             hitPlayer.alive = false;
             hitPlayer.snowballs = 0;
             
@@ -77,7 +77,7 @@ export class GameStateManager {
     }
 
     private getPlayerIdByObject(targetPlayer: Player): string {
-        for (const [id, player] of this.state.players) {
+        for (const [id, player] of this.state.players.entries()) {
             if (player === targetPlayer) {
                 return id;
             }
