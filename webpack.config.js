@@ -42,26 +42,28 @@ module.exports = {
             'window.VITE_FRONTEND_URL': JSON.stringify(process.env.VITE_FRONTEND_URL || 'http://localhost:8080'),
         }),
     ],
-    devServer: {
-        static: {
-            directory: path.join(__dirname, 'dist'),
-        },
-        compress: true,
-        port: 8080,
-        hot: true,
-        liveReload: true,
-        open: true,
-        watchFiles: ['src/**/*'],
-        client: {
-            overlay: {
-                errors: true,
-                warnings: false,
+    ...(process.env.NODE_ENV !== 'production' && {
+        devServer: {
+            static: {
+                directory: path.join(__dirname, 'dist'),
+            },
+            compress: true,
+            port: 8080,
+            hot: true,
+            liveReload: true,
+            open: true,
+            watchFiles: ['src/**/*'],
+            client: {
+                overlay: {
+                    errors: true,
+                    warnings: false,
+                },
             },
         },
-    },
-    mode: 'development',
-    devtool: 'source-map',
-    watch: true,
+    }),
+    mode: process.env.NODE_ENV || 'development',
+    devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
+    watch: process.env.NODE_ENV !== 'production',
     watchOptions: {
         ignored: /node_modules|server/,
         aggregateTimeout: 300,
