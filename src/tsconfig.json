@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["dom", "es5", "scripthost", "es2015", "dom.iterable"],
+        "outDir": "../dist",
+        "strictNullChecks": false,
+        "downlevelIteration": true
+    },
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "../server/**/*",
+        "../node_modules/**/*"
+    ]
+}

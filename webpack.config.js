@@ -4,7 +4,8 @@ const webpack = require('webpack');
 require('dotenv').config();
 
 module.exports = {
-    entry: './src/game.ts',
+    context: path.resolve(__dirname, 'src'),
+    entry: './game.ts',
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
@@ -14,8 +15,17 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules|server/,
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: path.resolve(__dirname, 'src/tsconfig.json')
+                    }
+                },
+                exclude: [
+                    /node_modules/,
+                    /server/,
+                    path.resolve(__dirname, 'server')
+                ],
             },
         ],
     },
@@ -24,7 +34,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html',
+            template: path.resolve(__dirname, 'src/index.html'),
             filename: 'index.html',
         }),
         new webpack.DefinePlugin({
