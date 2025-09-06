@@ -1,0 +1,34 @@
+{
+  "name": "gelid-war",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "start": "webpack serve --open",
+    "dev": "webpack serve --mode development",
+    "dev:watch": "webpack --watch --mode development",
+    "server": "cd server && npm run start",
+    "server:dev": "cd server && npm run dev",
+    "dev:all": "concurrently \"npm run dev\" \"npm run server:dev\" --names \"FRONTEND,BACKEND\" --prefix-colors \"cyan,magenta\"",
+    "dev:frontend": "webpack serve --mode development",
+    "dev:backend": "cd server && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "phaser": "^3.90.0",
+    "socket.io-client": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/socket.io-client": "^3.0.0",
+    "concurrently": "^8.0.1",
+    "html-webpack-plugin": "^5.6.4",
+    "ts-loader": "^9.5.4",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

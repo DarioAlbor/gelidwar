@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Gelid War - Snow Battle</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #game-title {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            margin: 0;
+        }
+
+        #game-title h1 {
+            margin: 0;
+            color: #FF6B6B;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #game-title p {
+            margin: 5px 0 0 0;
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        #main-container {
+            display: flex;
+            flex: 1;
+            gap: 15px;
+            padding: 10px;
+            align-items: center;
+        }
+
+        #ui-guide {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            width: 250px;
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+        #scoreboard {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            width: 250px;
+            backdrop-filter: blur(10px);
+            flex-shrink: 0;
+        }
+
+        #game-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        #game-area canvas {
+            border: 3px solid #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: block;
+            margin: 0;
+        }
+
+        #game-messages {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        #ui-guide h3, #scoreboard h3 {
+            margin: 0 0 15px 0;
+            color: #4CAF50;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #players-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            border-left: 3px solid #4CAF50;
+        }
+
+        .player-item.current-player {
+            border-left-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .player-name {
+            font-size: 12px;
+            font-weight: 500;
+            color: #fff;
+            word-break: break-all;
+        }
+
+        .player-score {
+            font-size: 14px;
+            font-weight: bold;
+            color: #FFD700;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .no-players {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .ui-section {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        .ui-section h4 {
+            margin: 0 0 8px 0;
+            color: #FFD700;
+            font-size: 14px;
+        }
+
+        .ui-section p {
+            margin: 5px 0;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        #snowball-counter {
+            font-size: 24px;
+            font-weight: bold;
+            color: #87CEEB;
+            text-align: center;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+
+        #snowball-counter.low {
+            color: #ff6b6b;
+        }
+
+        #snowball-counter.medium {
+            color: #ffa726;
+        }
+
+        #snowball-counter.high {
+            color: #66bb6a;
+        }
+
+        #snowball-counter.full {
+            color: #42a5f5;
+            text-shadow: 0 0 10px rgba(66, 165, 245, 0.5);
+        }
+
+        .controls-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .controls-list li {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .key {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        @media (max-width: 1024px) {
+            #main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #ui-guide, #scoreboard {
+                width: 100%;
+                max-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-title">
+        <h1>❄️ GELID WAR</h1>
+        <p>Snow Battle</p>
+    </div>
+
+    <div id="main-container">
+        <div id="ui-guide">
+            <h3>🎮 Game Controls</h3>
+            
+            <div class="ui-section">
+                <h4>📦 Inventory</h4>
+                <div id="snowball-counter">Snowballs: <span id="snowball-count">0</span>/5</div>
+            </div>
+            
+            <div class="ui-section">
+                <h4>🎯 Actions</h4>
+                <ul class="controls-list">
+                    <li><span class="key">G</span> - Pick up snowballs</li>
+                    <li><span class="key">Left Click</span> - Move player</li>
+                    <li><span class="key">Right Click</span> - Throw snowball</li>
+                </ul>
+            </div>
+            
+            <div class="ui-section">
+                <h4>💡 Instructions</h4>
+                <p>• Press <span class="key">G</span> to pick up snowballs</p>
+                <p>• Right click on yellow tiles to throw</p>
+                <p>• Left click to move around the map</p>
+                <p>• Eliminate other players to score points!</p>
+            </div>
+        </div>
+
+        <div id="game-area">
+            <div id="game-messages"></div>
+        </div>
+
+        <div id="scoreboard">
+            <h3>🏆 Scores</h3>
+            <div id="players-list">
+                <div class="no-players">Waiting for players...</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
