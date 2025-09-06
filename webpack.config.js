@@ -15,7 +15,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 use: 'ts-loader',
-                exclude: [/node_modules/, /server/],
+                exclude: /node_modules|server/,
             },
         ],
     },
@@ -53,7 +53,7 @@ module.exports = {
     devtool: 'source-map',
     watch: true,
     watchOptions: {
-        ignored: [/node_modules/, /server/],
+        ignored: /node_modules|server/,
         aggregateTimeout: 300,
         poll: 1000,
     },
