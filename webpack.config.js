@@ -61,12 +61,6 @@ module.exports = {
             },
         },
     }),
-    mode: process.env.NODE_ENV || 'development',
-    devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
-    watch: process.env.NODE_ENV !== 'production',
-    watchOptions: {
-        ignored: /node_modules|server/,
-        aggregateTimeout: 300,
-        poll: 1000,
-    },
+    mode: 'production',
+    devtool: false,
 };
